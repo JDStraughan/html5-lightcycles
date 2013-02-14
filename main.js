@@ -1,3 +1,8 @@
+/*
+ * HTML5 lightcycles
+ * copyright (c) 2013 Jason Straughan - JDStraughan.com
+ * MIT License - http://opensource.org/licenses/MIT
+ */
 canvas = document.getElementById("the-game");
 context = canvas.getContext("2d");
 
@@ -8,7 +13,7 @@ enemy = {
   color: '#92F15F',
   history: [],
   current_direction: null
-}
+};
 
 player = {
   type: 'user',
@@ -17,7 +22,7 @@ player = {
   color: '#58BEFF',
   history: [],
   current_direction: null
-}
+};
 
 keys = {
   up: [38, 87],
@@ -25,7 +30,7 @@ keys = {
   left: [37, 65],
   right: [39, 68],
   start_game: [13, 32]
-}
+};
 
 lastKey = null;
 
@@ -62,7 +67,7 @@ game = {
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
   
-}
+};
 
 cycle = {
   
@@ -122,7 +127,7 @@ cycle = {
     // Up
     for (i = enemy.y - enemy.height; i>= 0; i -= enemy.height) {
       pong.up = enemy.y - i - enemy.width;
-      if (this.isCollision(enemy.x, i)) break;;
+      if (this.isCollision(enemy.x, i)) break;
     }
     // Down
     for (i = enemy.y + enemy.height; i<= canvas.height; i += enemy.height) {
@@ -177,21 +182,21 @@ cycle = {
   },
   
   generateCoords: function(cycle) {
-    return cycle.x + "," + cycle.y
+    return cycle.x + "," + cycle.y;
   },
   
   draw: function(cycle) {
     context.fillStyle = cycle.color;
   	context.beginPath();
-  	context.moveTo(cycle.x  - (cycle.width / 2), cycle.y - (cycle.height / 2));
-  	context.lineTo(cycle.x  + (cycle.width / 2), cycle.y - (cycle.height / 2));
-  	context.lineTo(cycle.x  + (cycle.width / 2), cycle.y + (cycle.height / 2));
-  	context.lineTo(cycle.x  - (cycle.width / 2), cycle.y + (cycle.height / 2));
+    context.moveTo(cycle.x - (cycle.width / 2), cycle.y - (cycle.height / 2));
+  	context.lineTo(cycle.x + (cycle.width / 2), cycle.y - (cycle.height / 2));
+  	context.lineTo(cycle.x + (cycle.width / 2), cycle.y + (cycle.height / 2));
+  	context.lineTo(cycle.x - (cycle.width / 2), cycle.y + (cycle.height / 2));
   	context.closePath();
     context.fill();
   }
   
-}
+};
 
 inverseDirection = function() {
   switch(player.current_direction) {
@@ -208,7 +213,7 @@ inverseDirection = function() {
       return 'right';
       break;
   }
-}
+};
 
 Object.prototype.getKey = function(value){
   for(var key in this){
@@ -229,7 +234,7 @@ addEventListener("keydown", function (e) {
 }, false);
 
 loop = function() {
-  if (game.over == false) {
+  if (game.over === false) {
     cycle.move(player, enemy);
     cycle.draw(player);
     cycle.moveEnemy();
