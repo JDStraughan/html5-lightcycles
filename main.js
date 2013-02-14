@@ -187,12 +187,12 @@ cycle = {
   
   draw: function(cycle) {
     context.fillStyle = cycle.color;
-  	context.beginPath();
+    context.beginPath();
     context.moveTo(cycle.x - (cycle.width / 2), cycle.y - (cycle.height / 2));
-  	context.lineTo(cycle.x + (cycle.width / 2), cycle.y - (cycle.height / 2));
-  	context.lineTo(cycle.x + (cycle.width / 2), cycle.y + (cycle.height / 2));
-  	context.lineTo(cycle.x - (cycle.width / 2), cycle.y + (cycle.height / 2));
-  	context.closePath();
+    context.lineTo(cycle.x + (cycle.width / 2), cycle.y - (cycle.height / 2));
+    context.lineTo(cycle.x + (cycle.width / 2), cycle.y + (cycle.height / 2));
+    context.lineTo(cycle.x - (cycle.width / 2), cycle.y + (cycle.height / 2));
+    context.closePath();
     context.fill();
   }
   
