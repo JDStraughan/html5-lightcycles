@@ -5,6 +5,7 @@
  */
 canvas = document.getElementById("the-game");
 context = canvas.getContext("2d");
+started = false;
 
 enemy = {
   type: 'program',
@@ -12,6 +13,7 @@ enemy = {
   height: 8,
   color: '#92F15F',
   history: [],
+  score: 0,
   current_direction: null
 };
 
@@ -21,6 +23,7 @@ player = {
   height: 8,
   color: '#58BEFF',
   history: [],
+  score: 0,
   current_direction: null
 };
 
@@ -36,7 +39,8 @@ lastKey = null;
 
 game = {
   
-  over: false,
+  over: true,
+  started: false,
   
   start: function() {
     cycle.resetPlayer();
@@ -44,6 +48,23 @@ game = {
     game.over = false;
     player.current_direction = "left";
     game.resetCanvas();
+  },
+
+  drawScore: function() {
+    context.fillStyle = '#FFF';
+    context.font = (canvas.height / 15) + 'px sans-serif';
+    context.textAlign = 'center';
+    context.fillText('ENEMY: ' + enemy.score, canvas.width/3, canvas.height/4); 
+    context.fillText('PLAYER: ' + player.score, canvas.width/1.5, canvas.height/4);
+  },
+
+  newGame: function(cycle) {
+    context.fillStyle = '#FFF';
+    context.font = (canvas.height / 15) + 'px sans-serif';
+    context.textAlign = 'center';
+    context.fillText('NEW GAME', canvas.width/2, canvas.height/3);
+    context.fillText('SPACE TO PLAY', canvas.width/2, canvas.height/2);
+    context.fillText('-you are blue-', canvas.width/2, canvas.height/1.5);
   },
   
   stop: function(cycle) {
@@ -53,7 +74,13 @@ game = {
     context.textAlign = 'center';
     winner = cycle.type == 'program' ? 'USER' : 'PROGRAM';
     context.fillText('GAME OVER - ' + winner + ' WINS', canvas.width/2, canvas.height/2);
-    context.fillText('press spacebar to contine', canvas.width/2, canvas.height/2 + (cycle.height * 3)); 
+    if (winner === "USER"){
+      player.score += 1
+    } else {
+      enemy.score += 1
+    }
+    context.fillText('press spacebar to continue', canvas.width/2, canvas.height/2 + (cycle.height * 3)); 
+    game.drawScore()
     cycle.color = "#F00";
   },
   
@@ -226,8 +253,11 @@ Object.prototype.getKey = function(value){
 
 addEventListener("keydown", function (e) {
     lastKey = keys.getKey(e.keyCode);
+    //alert("get key: " +  keys.getKey(e.keyCode))
     if (['up', 'down', 'left', 'right'].indexOf(lastKey) >= 0  && lastKey != inverseDirection()) {
       player.current_direction = lastKey;
+    } else if (['start_game'].indexOf(lastKey) >= 0  && player.history == []) {
+      game.start();
     } else if (['start_game'].indexOf(lastKey) >= 0  && game.over) {
       game.start();
     }
@@ -239,10 +269,12 @@ loop = function() {
     cycle.draw(player);
     cycle.moveEnemy();
     cycle.draw(enemy);
+  } else if(!game.started) {
+    game.started = true;
+    game.newGame();
   }
 };
 
 main = function() {
-  game.start();
   setInterval(loop, 100);  
 }();
